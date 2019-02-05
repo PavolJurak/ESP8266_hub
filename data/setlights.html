@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"  rel='stylesheet' type='text/css'>
+<link href='custom.css' rel='stylesheet' type='text/css'>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<title>ESP8266 server</title>
+<script>
+function doRequest()
+{
+	var code = document.getElementById('radio_code').value;
+	var url = "/setlights?radio_code=" + code;
+	if (url != null){
+		if (window.ActiveXObject){
+			httpRequest = new ActiveXobject("Microsoft.XMLHTTP");
+		}else{
+			httpRequest = new XMLHttpRequest();
+		}
+		httpRequest.open("GET", url, true);
+		httpRequest.send(null);
+	}else{
+		alert("Url je prazdne");
+	}
+}
+</script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">ESP8266 HUB</a>
+		</div>	
+		<ul class="nav navbar-nav">
+			<li><a href="/">CONTROL</a></li>
+			<li><a href="/ledlamp">LED LAMP</a></li>
+			<li><a href="/setlights">SETTING LIGHTS</a></li>
+			<li><a href="/setblinds">CALIBRATION BLINDS</a></li>
+			<li><a href="/firmware">UPLOAD FIRMWARE</a></li>
+		</ul>
+	</div>
+</nav>
+<main>
+	<div class="container">
+		<h1>ESP8266 setting lights</h2>
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<div class="control-box">
+					<table class="upload_div">
+						<tr>
+							<td colspan="2"><h4><b>Radio code transmitter</b></h4></td>
+						</tr>
+						<tr>
+							<td><input type="text" name="radio_code" id="radio_code"></td>
+							<td><input type="button" name="submit_code" value="SEND" class="button_cp" onclick="doRequest()"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+		<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<div id="manual">
+				<div id="manual_title">Smart Switch - remote control pairing</div>
+				<div class="manual_query">1. How to use a button to turn it ON & OFF?</div>
+				<div class="manual_description">
+					Press the touch button for few seconds when rings one beep and
+					then press remote any key, power ON nad OFF control can be realized.
+				</div>
+				<div class="manual_query">2. How to use a button to turn it ON?</div>
+				<div class="manual_description">
+					Press the touch button for few seconds when rings two beeps, and
+					then press remote any key, power ON control can be realized.
+				</div>
+				<div class="manual_query">3. How to use a button to turn it OFF?</div>
+				<div class="manual_description">
+					Press the touch button for few seconds when rings three beeps, and
+					then press remote any key, power ON control can be realized.
+				</div>
+				<div class="manual_query">4. How clean up the code?</div>
+				<div class="manual_description">
+					Press the touch button for few seconds when rings four beeps.
+					The code will be cleared.
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+</body>
+</html>

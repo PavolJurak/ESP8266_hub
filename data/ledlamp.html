@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<link href='main.css' rel='stylesheet' type='text/css'>
+<meta charset="UTF-8" />
+<title>LED Control</title>
+<link href='main.css' rel='stylesheet' type='text/css'>
+<script src="webSocket.js" type="text/javascript"></script>
+</head>
+<body>
+<center>
+	<header>
+		<a href="/">
+		<img src="home.svg" alt="Go to home menu" height="40" width="40">
+		</a>
+		<h1>ESP8266 control led lamp</h1>
+	</header>
+	<div>
+		<table class="upload_div">
+			<tr>
+				<td colspan=3 class="titleColor" style="text-align: center;">Nastavenie farby led lampy</td>
+			</tr>
+			<tr>
+				<td style="width:14.4px; text-align: right">R:</td>
+				<td><input class="enabled" id="r" type="range" min="0" max="255" step="1" oninput="sendRGB();" value="0"></td>
+			</tr>
+			<tr>
+				<td style="width:14.4px; text-align: right">G: </td>
+                <td><input class="enabled" id="g" type="range" min="0" max="255" step="1" oninput="sendRGB();" value="0"></td>
+			</tr>
+			<tr>
+				<td style="width:14.4px; text-align: right">B: </td>
+                <td><input class="enabled" id="b" type="range" min="0" max="255" step="1" oninput="sendRGB();" value="0"></td>
+			</tr>
+		</table>
+	</div>
+</center>
+</body>
+</html>

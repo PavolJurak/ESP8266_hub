@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"  rel='stylesheet' type='text/css'>
+<link href='custom.css' rel='stylesheet' type='text/css'>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<script>
+function getValue()
+{
+	var url = "/jsonEeepromValues";
+	if (url != null) {
+		if (window.ActiveXObject) {
+			httpRequest = new ActiveXobject("Microsoft.XMLHTTP");
+		} else {
+			httpRequest = new XMLHttpRequest();
+		}
+	}
+	httpRequest.onreadystatechange = function(){
+		if (this.readyState == 4 && this.status == 200){
+			var text = httpRequest.responseText;
+			console.log(text);
+			//doplnenie hodnot do inputov
+			var json_obj = JSON.parse(text);
+			document.getElementById("CloseSun").value = json_obj.P0;
+			document.getElementById("CloseNight").value = json_obj.P1;
+			document.getElementById("OpenLow").value = json_obj.P2;
+			document.getElementById("OpenMiddle").value = json_obj.P3;
+			document.getElementById("OpenHight").value = json_obj.P4;
+		}
+	}
+	httpRequest.open("GET", url, true);
+	httpRequest.send();
+}
+function doRequest(url)
+{
+	var command = document.getElementById("textCommand").value;	
+	if (url != null){
+		if (window.ActiveXObject){
+			httpRequest = new ActiveXobject("Microsoft.XMLHTTP");
+		}else{
+			httpRequest = new XMLHttpRequest();
+		}
+		httpRequest.open("GET", url+command, true);
+		httpRequest.send(null);
+	}else{
+		alert("Url je prazdne");
+	}
+}
+</script>
+<title>ESP8266 server</title>
+</head>
+<body>
+<nav class="navbar navbar-default">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">ESP8266 HUB</a>
+		</div>	
+		<ul class="nav navbar-nav">
+			<li><a href="/" class="active">CONTROL</a></li>
+			<li><a href="/ledlamp">LED LAMP</a></li>
+			<li><a href="/setlights">SETTING LIGHTS</a></li>
+			<li><a href="/setblinds">CALIBRATION BLINDS</a></li>
+			<li><a href="/firmware">UPLOAD FIRMWARE</a></li>
+		</ul>
+	</div>
+</nav>
+<main>
+	<div class="container">
+		<h1>ESP8266 control panel</h2>
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<div class="control-box">
+					<h3 class="titleColor">Konfigurácia žalúzií</h3>
+					<table>
+						<tr>
+							<td>
+								Command
+							</td>
+							<td>
+								<input type="text" id="textCommand">
+							</td>
+							<td>
+								<input type="button" id="sendCommand" value="Send" onclick="doRequest('/setblinds?Code=')">
+							<td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3"></div>
+			<div class="col-sm-6">
+				<div class="control-box">
+					<h3 class="titleColor">Uložené hodnoty v EEPROM</h3>
+					<table>
+						<tr>
+							<td>Close - sun</td>
+							<td><input id="CloseSun" type="text" name="CloseSun"></td>
+						</tr>
+						<tr>
+							<td>Close - night</td>
+							<td><input id="CloseNight" type="text" name="CloseNight"></td>
+						</tr>
+						<tr>
+							<td>Open - low</td>
+							<td><input id="OpenLow" type="text" name="OpenLow"></td>
+						</tr>
+						<tr>
+							<td>Open - middle</td>
+							<td><input id="OpenMiddle" type="text" name="OpenMiddle"></td>
+						</tr>
+						<tr>
+							<td>Open - hight</td>
+							<td><input id="OpenHight" type="text" name="OpenHight"></td>
+						</tr>
+						<tr>
+							<td>
+								<input type="button" onclick="getValue()" value="Refresh">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+</body>
+</html>
+<script>
+	getValue();
+</script>

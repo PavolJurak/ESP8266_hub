@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"  rel='stylesheet' type='text/css'>
+<link href='custom.css' rel='stylesheet' type='text/css'>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<title>ESP8266 server</title>
+<script>
+function clearDiv () {
+    var p = document.getElementById('message');
+	var md = document.getElementById('message_div');
+    p.innerHTML = "";
+	md.classList.remove('myalert-successfully');
+}
+
+function getBlindsPosition()
+{
+	var url = '/jsonBlindPosition';
+	var leftBlindRange = document.getElementById('LeftBlind');
+	var rightBlindRange = document.getElementById('RightBlind');
+	
+	if (window.ActiveXObject){
+		httpRequest = new ActiveXobject("Microsoft.XMLHTTP");
+	}else {
+		httpRequest = new XMLHttpRequest();
+	}
+	httpRequest.open("GET", url, true);
+	httpRequest.onload = function () {
+		var code = httpRequest.status;
+		if (this.readyState == 4 && this.status == 200) {
+			var text = httpRequest.responseText;
+			var json_obj = JSON.parse(text);
+			leftBlindRange.value = json_obj.left;
+			rightBlindRange.value = json_obj.right;
+		}
+			console.log('DONE',code);
+		};
+	httpRequest.send(null);
+}
+
+function doRequest(url)
+{
+	if (url != null){
+		if (window.ActiveXObject){
+			httpRequest = new ActiveXobject("Microsoft.XMLHTTP");
+		}else{
+			httpRequest = new XMLHttpRequest();
+		}
+		httpRequest.open("GET", url, true);
+		httpRequest.onload = function () {
+			var code = httpRequest.status;
+			if (this.readyState == 4 && this.status == 200) {
+				var p = document.getElementById('message');
+				var md = document.getElementById('message_div');
+				md.classList.add('myalert-successfully');
+				p.innerHTML += 'Request on ESP8266 was successfully';
+				var delMessage = setTimeout(clearDiv, 1500);
+			}
+			console.log('DONE',code);
+		};
+		httpRequest.send(null);
+	}else{
+		alert("Url je prazdne");
+	}
+	getBlindsPosition();
+}
+</script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">ESP8266 HUB</a>
+		</div>	
+		<ul class="nav navbar-nav">
+			<li><a href="/" class="active">CONTROL</a></li>
+			<li><a href="/ledlamp">LED LAMP</a></li>
+			<li><a href="/setlights">SETTING LIGHTS</a></li>
+			<li><a href="/setblinds">CALIBRATION BLINDS</a></li>
+			<li><a href="/firmware">UPLOAD FIRMWARE</a></li>
+		</ul>
+	</div>
+</nav>
+<main>
+	<div class="container">
+		<div>
+			<div class="text-md-center" id="message_div" style="height: 25px;"><p id="message" style="height: 25px;"></p>
+			</div>
+		</div>
+		<h1>ESP8266 control panel</h2>
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<div class="control-box">
+				<h3 class="titleColor">Spálňa</h3>
+				<table>
+					<tr>
+						<td>Svetlo č.1</td>
+						<td><input type="button" name="Light1" value="ON" class="button_cp" onclick="doRequest('/?Light1=ON')"></td>
+						<td><input type="button" name="Light1" value="OFF" class="button_cp" onclick="doRequest('/?Light1=OFF')"></td>
+					</tr>
+					<tr>
+						<td>Svetlo č.2</td>
+						<td><input type="button" name="Light2" value="ON" class="button_cp" onclick="doRequest('/?Light2=ON')"></td>
+						<td><input type="button" name="Light2" value="OFF" class="button_cp" onclick="doRequest('/?Light2=OFF')"></td>
+					</tr>
+					<tr>
+						<td>Všetky svetlá</td>
+						<td><input type="button" name="AllBedroomLights" value="ON" class="button_cp" onclick="doRequest('/?AllBedroomLights=ON')"></td>
+						<td><input type="button" name="AllBedroomLights" value="OFF" class="button_cp" onclick="doRequest('/?AllBedroomLights=OFF')"></td>
+					</tr>
+				</table>
+				<h4>Žalúzie</h4>
+				<table>
+					<tr>
+						<td></td>
+						<td>Lavá lamela</td>
+						<td>Pravá lamela</td>
+						<td>Všetky lamely</td>
+					</tr>
+					<tr>
+						<td>
+							Zatvor(Sun)
+						</td>
+						<td>
+							<input type="button" name="LeftCloseSun" value="ON" class="button_cp" onclick="doRequest('/?LeftCloseSun=ON')">
+						</td>
+						<td>
+							<input type="button" name="RightCloseSun" value="ON" class="button_cp" onclick="doRequest('/?RightCloseSun=ON')">
+						</td>
+						<td>
+							<input type="button" name="AllCloseSun" value="ON" class="button_cp" onclick="doRequest('/?AllCloseSun=ON')">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Zatvor(Night)
+						</td>
+						<td>
+							<input type="button" name="LeftCloseNight" value="ON" class="button_cp" onclick="doRequest('/?LeftCloseNight=ON')">
+						</td>
+						<td>
+							<input type="button" name="RightCloseNight" value="ON" class="button_cp" onclick="doRequest('/?RightCloseNight=ON')">
+						</td>
+						<td>
+							<input type="button" name="AllCloseNight" value="ON" class="button_cp" onclick="doRequest('/?AllCloseNight=ON')">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Otvor(Low)
+						</td>
+						<td>
+							<input type="button" name="LeftOpenLow" value="ON" class="button_cp" onclick="doRequest('/?LeftOpenLow=ON')">
+						</td>
+						<td>
+							<input type="button" name="RightOpenLow" value="ON" class="button_cp" onclick="doRequest('/?RightOpenLow=ON')">
+						</td>
+						<td>
+							<input type="button" name="AllOpenLow" value="ON" class="button_cp" onclick="doRequest('/?AllOpenLow=ON')">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Otvor(Middle)
+						</td>
+						<td>
+							<input type="button" name="LeftOpenMiddle" value="ON" class="button_cp" onclick="doRequest('/?LeftOpenMiddle=ON')">
+						</td>
+						<td>
+							<input type="button" name="RightOpenMiddle" value="ON" class="button_cp" onclick="doRequest('/?RightOpenMiddle=ON')">
+						</td>
+						<td>
+							<input type="button" name="AllOpenMiddle" value="ON" class="button_cp" onclick="doRequest('/?AllOpenMiddle=ON')">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Otvor(Hight)
+						</td>
+						<td>
+							<input type="button" name="LeftOpenHight" value="ON" class="button_cp" onclick="doRequest('/?LeftOpenHight=ON')">
+						</td>
+						<td>
+							<input type="button" name="RightOpenHight" value="ON" class="button_cp" onclick="doRequest('/?RightOpenHight=ON')">
+						</td>
+						<td>
+							<input type="button" name="AllOpenHight" value="ON" class="button_cp" onclick="doRequest('/?AllOpenHight=ON')">
+						</td>
+					</tr>
+					<tr>
+						<td>Lavá lamela</td>
+						<td colspan=3><input type="range" name="LeftBlind" id="LeftBlind" min="5" max="175" step="1" value="0" onmouseup="doRequest('/?LeftBlind='+value)">
+						</td>
+					</tr>
+					<tr>
+						<td>Pravá lamela</td>
+						<td colspan=3><input type="range" name="RightBlind" id="RightBlind" min="5" max="175" step="1" value="0" onmouseup="doRequest('/?RightBlind='+value)">
+						</td>
+					</tr>
+				</table>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3"></div>
+			<div class="col-sm-6">
+				<div class="control-box">
+				<h3 class="titleColor">Obývačka</h3>
+				<table class="upload_div">
+					<tr>
+						<td>Svetlo č.3</td>
+						<td><input type="button" name="Light3" value="ON" class="button_cp" onclick="doRequest('/?Light3=ON')"></td>
+						<td><input type="button" name="Light3" value="OFF" class="button_cp" onclick="doRequest('/?Light3=OFF')"></td>
+					</tr>
+					<tr>
+						<td>Svetlo č.4</td>
+						<td><input type="button" name="Light4" value="ON" class="button_cp" onclick="doRequest('/?Light4=ON')"></td>
+						<td><input type="button" name="Light4" value="OFF" class="button_cp" onclick="doRequest('/?Light4=OFF')"></td>
+					</tr>
+					<tr>
+						<td>Svetlo č.5</td>
+						<td><input type="button" name="Light5" value="ON" class="button_cp" onclick="doRequest('/?Light5=ON')"></td>
+						<td><input type="button" name="Light5" value="OFF" class="button_cp" onclick="doRequest('/?Light5=OFF')"></td>
+					</tr>
+					<tr>
+						<td>Svetlo č.6</td>
+						<td><input type="button" name="Light6" value="ON" class="button_cp" onclick="doRequest('/?Light6=ON')"></td>
+						<td><input type="button" name="Light6" value="OFF" class="button_cp" onclick="doRequest('/?Light6=OFF')"></td>
+					</tr>
+					<tr>
+						<td>Všetky svetlá</td>
+						<td><input type="button" name="AllLivingRoomLights" value="ON" class="button_cp" onclick="doRequest('/?AllLivingRoomLights=ON')"></td>
+						<td><input type="button" name="AllLivingRoomLights" value="OFF" class="button_cp" onclick="doRequest('/?AllLivingRoomLights=OFF')"></td>
+					</tr>
+				</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+</body>
+</html>
+<script>
+getBlindsPosition();
+</script>

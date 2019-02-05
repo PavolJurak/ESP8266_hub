@@ -1,0 +1,114 @@
+main {text-align: center;}
+
+.row {padding-bottom: 30px;}
+
+.navbar-default .navbar-nav > .active{
+    color: #000;
+    background: #d65c14;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    color: #000;
+    background: #d65c14;
+}
+
+.center-block {
+  display: block;
+  margin: 0px auto;
+}
+
+.titleColor {
+	font-size: 18px;
+	background-color: #3fb0ac;
+	color:#fff; 
+	padding-top: 8px;
+	display: block;	
+	text-align: center;
+	height: 35px;
+}
+
+table {
+	margin: 0px auto;
+	border: 0px solid black;
+}
+
+
+table th, td {
+	text-align: left;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 2px;
+}
+
+
+table input {
+	width: 100%;
+}
+
+table input[type=button] {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#manual_title {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#manual {
+	margin-top: 60px;
+}
+
+input[type=range]{ 
+   width: 100%;
+}
+
+.manual_description {
+	text-align: left;
+	padding-left: 24px;
+}
+
+.manual_query {
+	text-align: left;
+	font-size: 20px;
+	margin-top: 10px;
+}
+
+.control-box {padding: 1px 10px 10px 10px;
+    box-shadow: 1px 1px 5px #555555;
+	text-align: center;
+	}
+	
+.button {
+    text-decoration: none;
+    border: none;
+    color: white;
+    background-color: #00878F;
+    padding: 6px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 1px 1px 6px #555;
+    outline: none;
+    margin: 5px auto;
+    display: inline-block;
+}
+
+.button_control {
+	margin-top: 10px;
+	width: 75px;
+}
+
+.button_cp {padding: 4px 0px;}
+
+.button_cp:hover {
+    box-shadow: 1px 1px 3px #444;
+}
+
+.myalert-successfully {
+	border:1px solid transparent;
+	border-radius:4px;
+	color: #3c763d;
+	background-color:#dff0d8;
+	border-color:#d6e9c6
+}
